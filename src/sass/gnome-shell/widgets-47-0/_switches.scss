@@ -17,7 +17,7 @@
     }
   }
 
-  @if $sidebar == 'styled' {
+  @if $accents == 'true' {
     .quick-toggle-menu &,
     .popup-sub-menu & {
       @if $variant == 'dark' { background-image: url("assets/toggle-off.svg"); }

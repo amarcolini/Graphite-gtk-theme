@@ -247,7 +247,7 @@
   padding: $base_padding * 2 !important;
   margin: $base_padding * 2 12px + $base_padding * 3 0 !important;
 
-  @if $sidebar == 'styled' {
+  @if $accents == 'true' {
     background-color: $primary !important;
     color: on($primary, secondary) !important;
 
@@ -272,10 +272,10 @@
     spacing: $base_padding;
     border-radius: $base_radius / 2 !important;
 
-    @if $sidebar == 'styled' {
+    @if $accents == 'true' {
       color: on($primary, secondary) !important;
 
-      StLabel { color: on($primary, secondary); }
+      StLabel, StIcon.popup-menu-icon { color: on($primary, secondary) !important; }
 
       &:focus, &.hover, &.selected {
         color: on($primary) !important;
@@ -303,13 +303,13 @@
     @if $colorful == 'true' {
       color: on($theme_green_color, secondary) !important;
 
-      StLabel { color: on($theme_green_color, secondary); }
+      StLabel, .popup-menu-icon { color: on($theme_green_color, secondary) !important; }
 
       &:focus, &.hover, &.selected, &:active, &.selected:active {
         color: $theme_green_color !important;
         background-color: on($theme_green_color) !important;
 
-        StLabel { color: $theme_green_color; }
+        StLabel, .popup-menu-icon { color: $theme_green_color !important; }
       }
     }
 
@@ -321,31 +321,71 @@
     spacing-columns: $base_padding * 2;
     padding-bottom: 2 * $base_padding;
 
+    @if $accents == 'true' {
+      background-color: $primary !important;
+      color: on($primary, secondary) !important;
+    } @else {
+      background-color: $popover !important;
+      color: $text !important;
+    }
+    @if $colorful == 'true' {
+      background-color: $theme_green_color !important;
+      color: on($theme_green_color, secondary) !important;
+    }
+
     .icon {
       icon-size: $base_icon_size * 1.5; // a non-standard symbolic size but ok
       border-radius: $base_radius;
       padding: 1.5 * $base_padding;
       background-color: on($popover, divider) !important;
 
+      @if $accents == 'true' {
+        &.active {
+          background-color: $primary !important;
+          color: on($primary, secondary) !important;
+        }
+      } @else {
+        &.active {
+          background-color: $popover !important;
+          color: $text;
+        }
+      }
       @if $colorful == 'true' {
         &.active {
           background-color: on($theme_green_color) !important;
           color: $theme_green_color;
-        }
-      } @else {
-        &.active {
-          background-color: on($primary) !important;
-          color: $primary;
         }
       }
     }
 
     .title {
       @extend %title_3;
+      @if $accents == 'true' {
+        background-color: $primary !important;
+        color: on($primary, secondary) !important;
+      } @else {
+        background-color: $popover !important;
+        color: $text !important;
+      }
+      @if $colorful == 'true' {
+        background-color: $theme_green_color !important;
+        color: on($theme_green_color, secondary) !important;
+      }
     }
 
     .subtitle {
       @extend %caption_heading;
+      @if $accents == 'true' {
+        background-color: $primary !important;
+        color: on($primary, secondary) !important;
+      } @else {
+        background-color: $popover !important;
+        color: $text !important;
+      }
+      @if $colorful == 'true' {
+        background-color: $theme_green_color !important;
+        color: on($theme_green_color, secondary) !important;
+      }
     }
   }
 }
@@ -392,7 +432,31 @@
 }
 
 .bt-device-item {
-  .popup-menu-icon { -st-icon-style: symbolic; }
+  .popup-menu-icon { 
+    -st-icon-style: symbolic;
+   }
+}
+
+.nm-network-item, .bt-device-item {
+  .popup-menu-icon {
+    @if $accents == 'true' {
+      &.active {
+        background-color: $primary !important;
+        color: on($primary, secondary) !important;
+      }
+    } @else {
+      &.active {
+        background-color: $popover !important;
+        color: $text;
+      }
+    }
+    @if $colorful == 'true' {
+      &.active {
+        background-color: on($theme_green_color) !important;
+        color: $theme_green_color;
+      }
+    }
+  }
 }
 
 .bt-menu-placeholder.popup-menu-item {

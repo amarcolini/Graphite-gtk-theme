@@ -37,7 +37,7 @@ $app_folder_size: 720px;
   }
 
   &:active,
-  &:checked, {
+  &:checked {
     color: on($osd);
     background-color: on($osd, track);
     box-shadow: none;

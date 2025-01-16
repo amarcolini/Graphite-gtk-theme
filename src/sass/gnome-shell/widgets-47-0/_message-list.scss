@@ -67,14 +67,16 @@
 .message {
   padding: $base_padding;
   margin: $base_spacing / 2;
-  border-radius: $window_radius;
+  border: 2px solid $primary !important;
+  border-radius: $base_radius + $base_padding * 2 !important;
+  padding: 0px !important;
 
   @if $colorful == 'true' {
     @include theme_bubble($theme_purple_color);
   }
 
   .popup-menu & {
-    border-radius: $base_radius;
+    border-radius: $base_radius + $base_padding * 2 !important;
 
     @if $colorful == 'true' {
       @include theme_bubble($theme_purple_color);
@@ -87,16 +89,20 @@
   .message-header {
     padding: 0 $base_padding;
     spacing: $base_padding;
+    background-color: $primary !important;
+    color: on($primary, "secondary") !important;
+    border-radius: $base_radius !important;
+    margin: 6px !important;
 
     // remove side padding to accommodate the close button
     &:ltr { padding-right: 0; }
     &:rtl { padding-left: 0; }
 
-    @if $colorful == 'true' {
-      color: on($theme_purple_color, disabled);
-    } @else {
-      color: $text-disabled;
-    }
+    // @if $colorful == 'true' {
+    //   color: on($theme_purple_color, disabled);
+    // } @else {
+    //   color: $text-disabled;
+    // }
 
     // header source icon
     .message-source-icon {
@@ -121,11 +127,12 @@
         // Add bottom padding to align the app name with the time horizontally
         padding-bottom: to_em(1px);
 
-        @if $colorful == 'true' {
-          color: on($theme_purple_color, disabled);
-        } @else {
-          color: $text-disabled;
-        }
+        color: on($primary, "secondary") !important;
+        // @if $colorful == 'true' {
+        //   color: on($theme_purple_color, disabled);
+        // } @else {
+        //   color: $text-disabled;
+        // }
 
         &:ltr { text-align: right; }
         &:rtl { text-align: left; }
@@ -136,10 +143,11 @@
     .message-expand-button,
     .message-close-button {
       @extend .icon-button;
-      color: $text;
-      background-color: $fill;
+      color: on($primary, "secondary");
+      background-color: on($primary,"fill");
       padding: 4px;
       border: none;
+      border-radius: $base_radius !important;
 
       &, &:hover, &:active {
         @if $colorful == 'true' {
@@ -218,9 +226,10 @@
 }
 
 .message-media-control {
-  margin: 4px $base_padding;
-  padding: $base_padding * 2;
-  border-radius: $circular_radius;
+  margin: 4px $base_padding/2;
+  padding: $base_padding;
+  border-radius: $base_radius;
+  min-width: 30px;
   border: none;
 
   @if $colorful == 'true' {
@@ -252,6 +261,8 @@
 }
 
 .media-message {
+  padding: $base_radius !important;
+  border-radius: $base_radius !important;
   // album-art
   .message-icon {
     border-radius: $base_radius !important;
