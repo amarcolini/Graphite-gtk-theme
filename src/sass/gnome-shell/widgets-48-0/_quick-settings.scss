@@ -17,7 +17,7 @@
   spacing-columns: $base_padding * 2;
 }
 
-.quick-toggle, .quick-menu-toggle {
+.quick-toggle, .quick-toggle-has-menu {
   border-radius: $base_radius;
   min-width: if($compact == 'false', 12em, 11em);
   max-width: if($compact == 'false', 12em, 11em);
@@ -115,77 +115,85 @@
   }
 }
 
-.quick-menu-toggle {
+// toggle with a menu button
+.quick-toggle-has-menu {
   & .quick-toggle {
     min-width: auto;
     max-width: auto;
 
-    &:ltr { border-radius: $base_radius 0 0 $base_radius; }
-    &:ltr > StBoxLayout { padding-right: $base_padding * 1.5; }
-    &:rtl { border-radius: 0 $base_radius $base_radius 0; }
-    &:rtr > StBoxLayout { padding-left: $base_padding * 1.5; }
+    &:ltr {
+      border-radius: $base_radius 0 0 $base_radius;
+      > StBoxLayout { padding-right: $scaled_padding * 1.5; }
+    }
+
+    &:rtl {
+      border-radius: 0 $base_radius $base_radius 0;
+      > StBoxLayout { padding-left: $scaled_padding * 1.5; }
+    }
 
     &:ltr:last-child { border-radius: $base_radius; }
     &:rtl:last-child { border-radius: $base_radius; }
   }
 
-  .quick-toggle-arrow {
+  & .quick-toggle-menu-button {
     padding: $scaled_padding $scaled_padding * 1.75;
     icon-size: $base_icon_size !important;
     border: none;
-  
+
     @if $colorful == 'true' {
-      background-color: rgba($primary, 0.13) !important;
+      background-color: rgba($primary, 0.15) !important;
       color: $primary;
-  
+
       &:hover {
         background-color: rgba($primary, 0.25) !important;
         color: $primary;
       }
-    
+
       &:active {
         background-color: $primary !important;
         color: on($primary);
       }
     } @else {
-      background-color: rgba($text, 0.08) !important;
+      background-color: rgba($text, 0.07) !important;
       color: $text-secondary;
-  
+
       &:hover {
-        background-color: rgba($text, 0.12) !important;
+        background-color: rgba($text, 0.15) !important;
         color: $text;
       }
-    
+
       &:active {
-        background-color: rgba($text, 0.2) !important;
+        background-color: rgba($text, 0.23) !important;
         color: $text;
       }
     }
-  
+
     &:checked {
-      background-color: $primary !important;
+      background-color: mix(on($primary), $primary, 6%) !important;
       color: on($primary);
-  
+
       &:hover {
-        background-color: mix(on($primary), $primary, 8%) !important;
+        background-color: mix(on($primary), $primary, 16%) !important;
         color: on($primary);
       }
-  
+
       &:active {
-        background-color: mix(on($primary), $primary, 15%) !important;
+        background-color: mix(on($primary), $primary, 25%) !important;
         color: on($primary);
       }
     }
-  
+
     &:ltr {
       border-radius: 0 $base_radius $base_radius 0;
-      border-left-width: 0;
     }
   
     &:rtl {
       border-radius: $base_radius 0 0 $base_radius;
-      border-right-width: 0;
     }
+  }
+
+  & .quick-toggle-separator {
+    width: 0;
   }
 }
 
@@ -256,7 +264,7 @@
     padding: 0 !important;
   }
 
-  @if $accents == 'true' {
+  @if $sidebar == 'styled' {
     background-color: $primary !important;
     color: on($primary, secondary) !important;
 
@@ -279,10 +287,10 @@
     spacing: $base_padding;
     border-radius: $base_radius / 2 !important;
 
-    @if $accents == 'true' {
+    @if $sidebar == 'styled' {
       color: on($primary, secondary) !important;
 
-      StLabel, StIcon.popup-menu-icon { color: on($primary, secondary) !important; }
+      StLabel { color: on($primary, secondary); }
 
       &:focus, &.hover, &.selected {
         color: on($primary) !important;
@@ -310,13 +318,13 @@
     @if $colorful == 'true' {
       color: on($theme_green_color, secondary) !important;
 
-      StLabel, .popup-menu-icon { color: on($theme_green_color, secondary) !important; }
+      StLabel { color: on($theme_green_color, secondary); }
 
       &:focus, &.hover, &.selected, &:active, &.selected:active {
         color: $theme_green_color !important;
         background-color: on($theme_green_color) !important;
 
-        StLabel, .popup-menu-icon { color: $theme_green_color !important; }
+        StLabel { color: $theme_green_color; }
       }
     }
 
@@ -331,71 +339,31 @@
     spacing-columns: $base_padding * 2;
     padding-bottom: 2 * $base_padding;
 
-    @if $accents == 'true' {
-      background-color: $primary !important;
-      color: on($primary, secondary) !important;
-    } @else {
-      background-color: $popover !important;
-      color: $text !important;
-    }
-    @if $colorful == 'true' {
-      background-color: $theme_green_color !important;
-      color: on($theme_green_color, secondary) !important;
-    }
-
     .icon {
       icon-size: $base_icon_size * 1.5; // a non-standard symbolic size but ok
       border-radius: $base_radius;
       padding: 1.5 * $base_padding;
       background-color: on($popover, divider) !important;
 
-      @if $accents == 'true' {
-        &.active {
-          background-color: $primary !important;
-          color: on($primary, secondary) !important;
-        }
-      } @else {
-        &.active {
-          background-color: $popover !important;
-          color: $text;
-        }
-      }
       @if $colorful == 'true' {
         &.active {
           background-color: on($theme_green_color) !important;
           color: $theme_green_color;
+        }
+      } @else {
+        &.active {
+          background-color: on($primary) !important;
+          color: $primary;
         }
       }
     }
 
     .title {
       @extend %title_3;
-      @if $accents == 'true' {
-        background-color: $primary !important;
-        color: on($primary, secondary) !important;
-      } @else {
-        background-color: $popover !important;
-        color: $text !important;
-      }
-      @if $colorful == 'true' {
-        background-color: $theme_green_color !important;
-        color: on($theme_green_color, secondary) !important;
-      }
     }
 
     .subtitle {
       @extend %caption_heading;
-      @if $accents == 'true' {
-        background-color: $primary !important;
-        color: on($primary, secondary) !important;
-      } @else {
-        background-color: $popover !important;
-        color: $text !important;
-      }
-      @if $colorful == 'true' {
-        background-color: $theme_green_color !important;
-        color: on($theme_green_color, secondary) !important;
-      }
     }
   }
 }
@@ -442,31 +410,7 @@
 }
 
 .bt-device-item {
-  .popup-menu-icon { 
-    -st-icon-style: symbolic;
-   }
-}
-
-.nm-network-item, .bt-device-item {
-  .popup-menu-icon {
-    @if $accents == 'true' {
-      &.active {
-        background-color: $primary !important;
-        color: on($primary, secondary) !important;
-      }
-    } @else {
-      &.active {
-        background-color: $popover !important;
-        color: $text;
-      }
-    }
-    @if $colorful == 'true' {
-      &.active {
-        background-color: on($theme_green_color) !important;
-        color: $theme_green_color;
-      }
-    }
-  }
+  .popup-menu-icon { -st-icon-style: symbolic; }
 }
 
 .bt-menu-placeholder.popup-menu-item {

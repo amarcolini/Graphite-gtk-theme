@@ -40,7 +40,9 @@ SIZE_VARIANTS=('' '-compact')
 if [[ "$(command -v gnome-shell)" ]]; then
   gnome-shell --version
   SHELL_VERSION="$(gnome-shell --version | cut -d ' ' -f 3 | cut -d . -f -1)"
-  if [[ "${SHELL_VERSION:-}" -ge "47" ]]; then
+  if [[ "${SHELL_VERSION:-}" -ge "48" ]]; then
+    GS_VERSION="48-0"
+  elif [[ "${SHELL_VERSION:-}" -ge "47" ]]; then
     GS_VERSION="47-0"
   elif [[ "${SHELL_VERSION:-}" -ge "46" ]]; then
     GS_VERSION="46-0"
@@ -53,9 +55,9 @@ if [[ "$(command -v gnome-shell)" ]]; then
   else
     GS_VERSION="3-28"
   fi
-  else
-    echo "'gnome-shell' not found, using styles for last gnome-shell version available."
-    GS_VERSION="47-0"
+else
+  echo "'gnome-shell' not found, using styles for last gnome-shell version available."
+  GS_VERSION="48-0"
 fi
 
 #  Check command avalibility
@@ -114,6 +116,13 @@ OPTIONS:
                           5. normal     Normal sidebar style (Nautilus)
                           6. float      Float gnome-shell panel style
                           7. colorful   Colorful gnome-shell panel style
+
+  --round                 Change theme round corner border-radius [Input the px value you want] (Suggested: 2px < value < 16px)
+                          1. 3px
+                          2. 4px
+                          3. 5px
+                          ...
+                          13. 15px
 
   -h, --help              Show help
 EOF
@@ -545,6 +554,12 @@ while [[ $# -gt 0 ]]; do
       libadwaita="true"
       shift
       ;;
+    --round)
+      round="true"
+      corner="$2"
+      echo -e "Change round corner ${corner} value ..."
+      shift 2
+      ;;
     -r|--remove|-u|--uninstall)
       uninstall="true"
       shift
@@ -782,6 +797,10 @@ colorful_panel() {
   sed -i "/\$colorful:/s/false/true/" ${SRC_DIR}/sass/_tweaks-temp.scss
 }
 
+round_corner() {
+  sed -i "/\$default_corner:/s/6px/${corner}/" ${SRC_DIR}/sass/_tweaks-temp.scss
+}
+
 gnome_shell_version() {
   sed -i "/\widgets/s/40-0/${GS_VERSION}/" ${SRC_DIR}/sass/gnome-shell/_common-temp.scss
 
@@ -861,6 +880,10 @@ theme_tweaks() {
 
   if [[ "$colorful" = "true" ]] ; then
     colorful_panel
+  fi
+
+  if [[ "$round" == "true" ]] ; then
+    round_corner
   fi
 }
 
